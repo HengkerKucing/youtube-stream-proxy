@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: youtube-proxy-config
+data:
+  LINK1: "https://www.youtube.com/watch?v=tuCzMVja0wI"
+  LINK2: "https://www.youtube.com/watch?v=6QL0RHNtOlo"

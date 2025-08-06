@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: youtube-proxy
+  labels:
+    app: youtube-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: youtube-proxy
+  template:
+    metadata:
+      labels:
+        app: youtube-proxy
+    spec:
+      containers:
+      - name: youtube-proxy
+        image: asia.gcr.io/[PROJECT_ID]/youtube-proxy:v1
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: youtube-proxy-config
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
+          requests:
+            cpu: "100m"
+            memory: "64Mi"

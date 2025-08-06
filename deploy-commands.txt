@@ -1,0 +1,34 @@
+# 1. Zip project (jalankan di local computer)
+zip -r youtube-proxy.zip . -x "node_modules/*" ".git/*"
+
+# 2. Upload ke Cloud Shell
+# Gunakan tombol upload di Cloud Shell, pilih file youtube-proxy.zip
+
+# 3. Di Cloud Shell, jalankan perintah berikut:
+unzip youtube-proxy.zip -d youtube-proxy
+cd youtube-proxy
+
+# 4. Setup GKE
+gcloud config set project final-year-463903
+gcloud container clusters create youtube-proxy-cluster \
+    --zone asia-southeast1-a \
+    --num-nodes 1 \
+    --machine-type e2-small \
+    --preemptible
+
+# 5. Get credentials
+gcloud container clusters get-credentials youtube-proxy-cluster --zone asia-southeast1-a
+
+# 6. Build dan Push Docker image
+gcloud auth configure-docker asia.gcr.io
+docker build -t asia.gcr.io/final-year-463903/youtube-proxy:v1 .
+docker push asia.gcr.io/final-year-463903/youtube-proxy:v1
+
+# 7. Deploy ke Kubernetes
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+
+# 8. Cek status
+kubectl get pods
+kubectl get service youtube-proxy
