@@ -10,11 +10,12 @@ cd youtube-proxy
 
 # 4. Setup GKE
 gcloud config set project final-year-463903
-gcloud container clusters create youtube-proxy-cluster \
+gcloud container clusters create bismillah \
     --zone asia-southeast1-a \
-    --num-nodes 1 \
-    --machine-type e2-small \
-    --preemptible
+    --num-nodes 2 \
+    --machine-type n1-standard-2 \
+    --preemptible \
+    --disk-size 20
 
 # 5. Get credentials
 gcloud container clusters get-credentials youtube-proxy-cluster --zone asia-southeast1-a
